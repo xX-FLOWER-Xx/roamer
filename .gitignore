@@ -1,4 +1,3 @@
-HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -33,7 +32,3 @@ build/
 .vscode/
 
 ### Test modifications ###
-src/main/java/fact/it/roamer/platformertesting
-src/main/java/fact/it/roamer/platformertesting/*
-src/main/java/fact/it/roamer/fpsrtesting
-src/main/java/fact/it/roamer/fpstesting/*
