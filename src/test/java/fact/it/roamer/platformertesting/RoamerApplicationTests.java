@@ -1,9 +1,7 @@
-package fact.it.roamer;
+package fact.it.roamer.platformertesting;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 class RoamerApplicationTests {
 
 	@Test
