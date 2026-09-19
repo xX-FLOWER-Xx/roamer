@@ -1,7 +1,5 @@
 package fact.it.roamer.platformertesting;
 
-import fact.it.roamer.platformertesting.Enums.GameState;
-
 import java.awt.image.BufferStrategy;
 
 // Runnable is standard java interface
@@ -67,7 +65,7 @@ public class GameLoop implements Runnable {
     }
 
     private void renderFrame() {
-        renderer.render(bs, GameState.PLAYING); // swap in real current state if you track one
+        renderer.render(bs); // swap in real current state if you track one
     }
 
     public void start_gameloop() {

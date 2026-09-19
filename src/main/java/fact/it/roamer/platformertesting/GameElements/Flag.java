@@ -7,6 +7,7 @@ import fact.it.roamer.platformertesting.Listeners.GameEventListener;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Flag extends GameObject implements Collidable, Drawable {
 
@@ -32,7 +33,7 @@ public class Flag extends GameObject implements Collidable, Drawable {
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
-    public void checkCollisions(ArrayList<Player> players) {
+    public void checkCollisions(CopyOnWriteArrayList<Player> players) {
         if (players != null) for (Player pl : players) if (this.isCollidingWith(pl)) {
             for (GameEventListener gel : gameEventListeners) gel.onGameEvent("VICTORY");
         }
@@ -40,4 +41,9 @@ public class Flag extends GameObject implements Collidable, Drawable {
 
     @Override
     public void collide(Collidable other) {}
+
+    @Override
+    public String toString() {
+        return "Flag(" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + ")";
+    }
 }

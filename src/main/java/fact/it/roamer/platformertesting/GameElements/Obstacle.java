@@ -5,6 +5,7 @@ import fact.it.roamer.platformertesting.Interfaces.Drawable;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Obstacle extends GameObject implements Collidable, Drawable {
 
@@ -19,10 +20,10 @@ public class Obstacle extends GameObject implements Collidable, Drawable {
 
     @Override
     public Rectangle getHitbox() {
-        return new Rectangle(getX(), getY(), getWidth(),getHeight());
+        return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
-    public void checkCollisions(Obstacle obstacle, ArrayList<Player> players, ArrayList<Enemy> enemies) {
+    public void checkCollisions(Obstacle obstacle, CopyOnWriteArrayList<Player> players, CopyOnWriteArrayList<Enemy> enemies) {
 
         // Check collisions with the player
         if (players != null) for (Player pl : players) if (obstacle.isCollidingWith(pl)) pl.collide(obstacle);
@@ -54,4 +55,8 @@ public class Obstacle extends GameObject implements Collidable, Drawable {
 
     }
 
+    @Override
+    public String toString() {
+        return "Obstacle(" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + ")";
+    }
 }

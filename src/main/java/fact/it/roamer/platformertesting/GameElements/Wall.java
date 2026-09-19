@@ -6,6 +6,7 @@ import fact.it.roamer.platformertesting.Interfaces.Drawable;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Wall extends GameObject implements Collidable, Drawable {
 
@@ -23,7 +24,7 @@ public class Wall extends GameObject implements Collidable, Drawable {
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
-    public void checkCollisions(Wall wall, ArrayList<Player> players, ArrayList<Enemy> enemies) {
+    public void checkCollisions(Wall wall, CopyOnWriteArrayList<Player> players, CopyOnWriteArrayList<Enemy> enemies) {
 
         // Check collisions with the player
         if (players != null) for (Player pl : players) if (wall.isCollidingWith(pl)) wall.collide(pl);
@@ -76,4 +77,8 @@ public class Wall extends GameObject implements Collidable, Drawable {
 
     }
 
+    @Override
+    public String toString() {
+        return "Wall(" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + ")";
+    }
 }

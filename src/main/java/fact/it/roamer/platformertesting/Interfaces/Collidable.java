@@ -4,6 +4,7 @@ import fact.it.roamer.platformertesting.GameElements.*;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public interface Collidable {
 
@@ -15,14 +16,14 @@ public interface Collidable {
         return this.getHitbox().intersects(other.getHitbox());
     }
 
-    static void checkAllCollisions(ArrayList<Portal> portals, ArrayList<Obstacle> obstacles,ArrayList<Enemy> enemies, ArrayList<Wall> walls, ArrayList<Flag> flags, ArrayList<Player> players) {
+    static void checkAllCollisions(CopyOnWriteArrayList<Portal> portals, CopyOnWriteArrayList<Obstacle> obstacles, CopyOnWriteArrayList<Enemy> enemies, CopyOnWriteArrayList<Wall> walls, CopyOnWriteArrayList<Flag> flags, CopyOnWriteArrayList<Player> players) {
 
         // Resetting ground check
         if (players != null) for (Player pl : players) pl.setOnGround(false);
         if (enemies != null) for (Enemy en : enemies) en.setOnGround(false);
 
         // Checking actual collisions
-        if (obstacles != null) for (Portal po : portals) po.checkCollisions(players, enemies);
+        if (portals != null) for (Portal po : portals) po.checkCollisions(players, enemies);
         if (obstacles != null) for (Obstacle ob : obstacles) ob.checkCollisions(ob, players, enemies);
         if (enemies != null) for (Enemy en : enemies) en.checkCollisions(en, enemies, flags, players);
         if (walls != null) for (Wall wa : walls) wa.checkCollisions(wa, players, enemies);

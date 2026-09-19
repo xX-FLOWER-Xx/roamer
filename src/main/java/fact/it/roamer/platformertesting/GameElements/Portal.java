@@ -5,6 +5,7 @@ import fact.it.roamer.platformertesting.Interfaces.Drawable;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Portal {
 
@@ -23,7 +24,7 @@ public class Portal {
         portalOut.draw(g);
     }
 
-    public void checkCollisions(ArrayList<Player> players, ArrayList<Enemy> enemies) {
+    public void checkCollisions(CopyOnWriteArrayList<Player> players, CopyOnWriteArrayList<Enemy> enemies) {
 
         if (portalCooldown > 0) {
             portalCooldown--;
@@ -42,7 +43,7 @@ public class Portal {
             return;
         }
 
-        // Check portalIn collisions with the player
+        // Check portalOut collisions with the player
         if (players != null) for (Player pl : players) if (portalOut.isCollidingWith(pl)) {
             portalOut.collide(pl);
             portalCooldown = 60;
@@ -147,6 +148,11 @@ public class Portal {
 
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return "Portal(" + portalIn.portalInX + ", " + portalIn.portalInY + ", " + portalIn.portalInWidth + ", " + portalIn.portalInHeight + portalOut.portalOutX + ", " + portalOut.portalOutY + ", " + portalOut.portalOutWidth + ", " + portalOut.portalOutHeight + ")";
     }
 
 }

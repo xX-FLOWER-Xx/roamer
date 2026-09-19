@@ -103,4 +103,9 @@ public class Player extends GameEntity implements Collidable, Drawable {
     public void setScreenHeight(int screenHeight) {
         this.screenHeight = screenHeight;
     }
+
+    @Override
+    public String toString() {
+        return "Player(" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + ", " + getSpeed() + ")";
+    }
 }

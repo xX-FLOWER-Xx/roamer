@@ -7,6 +7,7 @@ import fact.it.roamer.platformertesting.Interfaces.Drawable;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Enemy extends GameEntity implements Collidable, Drawable {
 
@@ -34,7 +35,7 @@ public class Enemy extends GameEntity implements Collidable, Drawable {
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
-    public void update(ArrayList<Player> players) {
+    public void update(CopyOnWriteArrayList<Player> players) {
 
         // Gravity, Sliding, Jumping, Moving left and right, Updating the positions, Preventing moving off-screen
         gravitate();
@@ -45,7 +46,7 @@ public class Enemy extends GameEntity implements Collidable, Drawable {
 
     }
 
-    public void checkCollisions(Enemy enemy, ArrayList<Enemy> enemies, ArrayList<Flag> flags, ArrayList<Player> players) {
+    public void checkCollisions(Enemy enemy, CopyOnWriteArrayList<Enemy> enemies, CopyOnWriteArrayList<Flag> flags, CopyOnWriteArrayList<Player> players) {
 
         // Check collisions with other, unchecked enemies
         int i = enemies.indexOf(enemy);
@@ -146,5 +147,10 @@ public class Enemy extends GameEntity implements Collidable, Drawable {
 
     public void setJumpCooldown(int jumpCooldown) {
         this.jumpCooldown = jumpCooldown;
+    }
+
+    @Override
+    public String toString() {
+        return "Enemy(" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() + ", " + getSpeed() + ")";
     }
 }

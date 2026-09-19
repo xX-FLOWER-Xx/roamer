@@ -8,6 +8,8 @@ import fact.it.roamer.platformertesting.Interfaces.Movable;
 import java.awt.Graphics;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameBoard implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
@@ -15,13 +17,14 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
     private boolean downPressed;
     private boolean leftPressed;
     private boolean rightPressed;
+    private boolean savePressed;
 
-    private ArrayList<Portal> portals;
-    private ArrayList<Obstacle> obstacles;
-    private ArrayList<Enemy> enemies;
-    private ArrayList<Wall> walls;
-    private ArrayList<Flag> flags;
-    private ArrayList<Player> players;
+    private CopyOnWriteArrayList<Portal> portals;
+    private CopyOnWriteArrayList<Obstacle> obstacles;
+    private CopyOnWriteArrayList<Enemy> enemies;
+    private CopyOnWriteArrayList<Wall> walls;
+    private CopyOnWriteArrayList<Flag> flags;
+    private CopyOnWriteArrayList<Player> players;
 
     private DrawTool drawTool;
     private boolean drawToolActive;
@@ -33,7 +36,7 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
 
     public GameBoard() { // This is the constructor
 
-        loader.loadLevel(1);
+        loader.loadNextLevel();
         drawTool = DrawTool.WALL;
 
     }
@@ -110,6 +113,7 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
         if (e.getKeyCode() == KeyEvent.VK_S) downPressed = true;
         if (e.getKeyCode() == KeyEvent.VK_Q) leftPressed = true;
         if (e.getKeyCode() == KeyEvent.VK_D) rightPressed = true;
+        if (e.getKeyCode() == KeyEvent.VK_P) savePressed = true;
 
     }
 
@@ -120,13 +124,15 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
         if (e.getKeyCode() == KeyEvent.VK_S) downPressed = false;
         if (e.getKeyCode() == KeyEvent.VK_Q) leftPressed = false;
         if (e.getKeyCode() == KeyEvent.VK_D) rightPressed = false;
+        if (e.getKeyCode() == KeyEvent.VK_P) savePressed = false;
 
     }
 
     // Called once per fixed physics tick by GameLoop
     public void update() {
 
-        loader.checkLevelStatus();
+        if (savePressed) {loader.trySave();}
+
         updateVariables();
         Movable.checkAllMovements(players, enemies);
         Collidable.checkAllCollisions(portals, obstacles, enemies, walls, flags, players);
@@ -166,27 +172,27 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
 
     // Setters
 
-    public void setPortals(ArrayList<Portal> portals) {
+    public void setPortals(CopyOnWriteArrayList<Portal> portals) {
         this.portals = portals;
     }
 
-    public void setObstacles(ArrayList<Obstacle> obstacles) {
+    public void setObstacles(CopyOnWriteArrayList<Obstacle> obstacles) {
         this.obstacles = obstacles;
     }
 
-    public void setEnemies(ArrayList<Enemy> enemies) {
+    public void setEnemies(CopyOnWriteArrayList<Enemy> enemies) {
         this.enemies = enemies;
     }
 
-    public void setWalls(ArrayList<Wall> walls) {
+    public void setWalls(CopyOnWriteArrayList<Wall> walls) {
         this.walls = walls;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(CopyOnWriteArrayList<Player> players) {
         this.players = players;
     }
 
-    public void setFlags(ArrayList<Flag> flags) {
+    public void setFlags(CopyOnWriteArrayList<Flag> flags) {
         this.flags = flags;
     }
 
@@ -220,4 +226,30 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
         flags.add(flag);
     }
 
+    // Getters
+
+
+    public List<Portal> getPortals() {
+        return portals;
+    }
+
+    public List<Obstacle> getObstacles() {
+        return obstacles;
+    }
+
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public List<Wall> getWalls() {
+        return walls;
+    }
+
+    public List<Flag> getFlags() {
+        return flags;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
 }

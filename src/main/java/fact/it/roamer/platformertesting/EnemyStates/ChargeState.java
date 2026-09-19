@@ -3,7 +3,7 @@ package fact.it.roamer.platformertesting.EnemyStates;
 import fact.it.roamer.platformertesting.GameElements.Enemy;
 import fact.it.roamer.platformertesting.GameElements.Player;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ChargeState implements EnemyState {
 
@@ -14,7 +14,7 @@ public class ChargeState implements EnemyState {
     }
 
     @Override
-    public void update(Enemy enemy, ArrayList<Player> player) {
+    public void update(Enemy enemy, CopyOnWriteArrayList<Player> player) {
 
         // Checking other states logic
 

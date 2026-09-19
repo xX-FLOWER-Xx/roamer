@@ -4,11 +4,12 @@ import fact.it.roamer.platformertesting.GameElements.Enemy;
 import fact.it.roamer.platformertesting.GameElements.Player;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RoamState implements EnemyState {
 
     @Override
-    public void update(Enemy enemy, ArrayList<Player> players) {
+    public void update(Enemy enemy, CopyOnWriteArrayList<Player> players) {
 
         // Roaming logic
 
@@ -34,7 +35,7 @@ public class RoamState implements EnemyState {
 
     }
 
-    private Player getClosestChargeablePlayer(Enemy enemy, ArrayList<Player> players) {
+    private Player getClosestChargeablePlayer(Enemy enemy, CopyOnWriteArrayList<Player> players) {
         Player closest = null;
         int closestDistance = Integer.MAX_VALUE;
         for (Player pl : players) {

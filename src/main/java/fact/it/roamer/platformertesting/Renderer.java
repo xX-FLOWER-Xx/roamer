@@ -1,7 +1,5 @@
 package fact.it.roamer.platformertesting;
 
-import fact.it.roamer.platformertesting.Enums.GameState;
-
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
@@ -15,7 +13,7 @@ public class Renderer {
         this.gameBoard = gameBoard;
     }
 
-    public void render(BufferStrategy bs, GameState state) {
+    public void render(BufferStrategy bs) {
         Graphics2D g = null;
         do {
             do {
