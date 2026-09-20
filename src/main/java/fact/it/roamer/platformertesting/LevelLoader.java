@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static java.lang.System.exit;
-
 public class LevelLoader implements GameEventListener {
 
     private ArrayList<GameEventListener> listeners = new ArrayList<>();
@@ -22,7 +20,10 @@ public class LevelLoader implements GameEventListener {
     public LevelLoader(GameBoard gameBoard) {
         currentLevel = -1;
         this.gameBoard = gameBoard;
-        addListener(new LevelEditor(this));
+
+        LevelEditor levelEditor = new LevelEditor(this);
+        levelEditor.addGameEventListener(gameBoard);
+        addListener(levelEditor);
     }
 
     public void loadEditor() {
@@ -85,47 +86,16 @@ public class LevelLoader implements GameEventListener {
 
     }
 
-    public void loadLevel(int level) {
+    public void loadLevel(int level_id) {
 
+        currentLevel = level_id;
         // Setup level
-        switch (level) {
-
-            case 0:
-                loadEditor();
-                break;
-
-            case 1:
-                loadFromSave(new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels\\1"));
-                break;
-
-            case 2:
-                loadFromSave(new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels\\2"));
-                break;
-
-            case 3:
-                loadFromSave(new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels\\3"));
-                break;
-
-            case 4:
-                loadFromSave(new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels\\4"));
-                break;
-
-            case 5:
-                loadFromSave(new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels\\5"));
-                break;
-
-            case 6:
-                loadFromSave(new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels\\6"));
-                break;
-
-            case 7:
-                loadFromSave(new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels\\test_level"));
-                break;
-
-            default:
-                System.out.println("You won the game!");
-                exit(0);
+        if (new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels\\" + level_id).exists()) {
+            loadFromSave(new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels\\" + level_id));
+        } else {
+            loadEditor();
         }
+
     }
 
     public void loadNextLevel() {
@@ -156,6 +126,24 @@ public class LevelLoader implements GameEventListener {
         temp.addAll(this.gameBoard.getFlags());
         temp.addAll(this.gameBoard.getPlayers());
         return temp;
+    }
+
+    public int getLevelCount() {
+        File file = new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels");
+        return file.listFiles().length;
+    }
+
+    public File getLevelByCount(int i) {
+        File file = new File(System.getenv("LOCALAPPDATA") + "\\Roamer\\levels");
+        return file.listFiles()[i];
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public boolean isEditor() {
+        return editor;
     }
 
     private void addListener(GameEventListener gel) {listeners.add(gel);}

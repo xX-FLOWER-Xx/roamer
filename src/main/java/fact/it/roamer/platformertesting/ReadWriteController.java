@@ -16,9 +16,9 @@ public class ReadWriteController {
 
     }
 
-    public void write_objects(ArrayList<Object> objects) {
+    public void write_objects(ArrayList<Object> objects, String fileName) {
 
-        try (FileWriter writer = new FileWriter(levels_folder.getAbsoluteFile() + "\\test_level", false)) {
+        try (FileWriter writer = new FileWriter(levels_folder.getAbsoluteFile() + "\\" + fileName, false)) {
             for (Object object : objects) {
                 writer.write(object.toString() + "\n");
             }

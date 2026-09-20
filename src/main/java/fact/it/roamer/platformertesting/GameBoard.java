@@ -1,9 +1,11 @@
 package fact.it.roamer.platformertesting;
 
+import fact.it.roamer.platformertesting.BackgroundObjects.GameButton;
 import fact.it.roamer.platformertesting.Enums.DrawTool;
 import fact.it.roamer.platformertesting.GameElements.*;
 import fact.it.roamer.platformertesting.Interfaces.Collidable;
 import fact.it.roamer.platformertesting.Interfaces.Movable;
+import fact.it.roamer.platformertesting.Listeners.GameEventListener;
 
 import java.awt.Graphics;
 import java.awt.event.*;
@@ -11,13 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class GameBoard implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
+public class GameBoard implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, GameEventListener {
 
     private boolean upPressed;
     private boolean downPressed;
     private boolean leftPressed;
     private boolean rightPressed;
     private boolean savePressed;
+    private boolean saveUpdated;
 
     private CopyOnWriteArrayList<Portal> portals;
     private CopyOnWriteArrayList<Obstacle> obstacles;
@@ -25,6 +28,8 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
     private CopyOnWriteArrayList<Wall> walls;
     private CopyOnWriteArrayList<Flag> flags;
     private CopyOnWriteArrayList<Player> players;
+
+    private ArrayList<GameButton> gameButtons;
 
     private DrawTool drawTool;
     private boolean drawToolActive;
@@ -34,10 +39,12 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
 
     private final LevelLoader loader = new LevelLoader(this);
 
-    public GameBoard() { // This is the constructor
+    public GameBoard() {
 
         loader.loadNextLevel();
         drawTool = DrawTool.WALL;
+
+        refreshButtons();
 
     }
 
@@ -78,6 +85,10 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
 
     @Override
     public void mousePressed(MouseEvent e) {
+
+        if (gameButtons != null) for (GameButton gb : gameButtons) if (gb.isClicked(e.getX(), e.getY())) loader.loadLevel(gb.getLevelId());
+        if (loader.isEditor() && drawToolActive) saveUpdated = true;
+
         if (drawToolActive) {
             if (drawTool == DrawTool.PLAYER) {
                 Player player = GameObjectFactory.createPlayer(e.getX(), e.getY(), 20, 50, loader);
@@ -128,11 +139,20 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
 
     }
 
+    @Override
+    public void onGameEvent(String eventType) {
+        if (eventType.equals("LEVEL_SAVE")) {
+            refreshButtons();
+        }
+    }
+
     // Called once per fixed physics tick by GameLoop
     public void update() {
 
-        if (savePressed) {loader.trySave();}
-
+        if (savePressed && saveUpdated) {
+            saveUpdated = false;
+            loader.trySave();
+        }
         updateVariables();
         Movable.checkAllMovements(players, enemies);
         Collidable.checkAllCollisions(portals, obstacles, enemies, walls, flags, players);
@@ -142,6 +162,7 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
     // Called once per frame by Renderer
     public void draw(Graphics g) {
 
+        if (gameButtons != null) for (GameButton gb : gameButtons) gb.draw(g);
         if (portals != null) for (Portal po : portals) po.draw(g);
         if (players != null) for (Player pl : players) pl.draw(g);
         if (flags != null) for (Flag fl : flags) fl.draw(g);
@@ -168,6 +189,13 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
             for (Enemy en : enemies) en.setScreenHeight(this.screenHeight);
         }
 
+    }
+
+    public void refreshButtons() {
+        gameButtons = new ArrayList<>();
+        for (int i = 0; i < loader.getLevelCount() + 1; i++) {
+            gameButtons.add(new GameButton(10 + (60*i), 10, 50, 40, String.valueOf(i)));
+        }
     }
 
     // Setters
@@ -252,4 +280,5 @@ public class GameBoard implements KeyListener, MouseListener, MouseMotionListene
     public List<Player> getPlayers() {
         return players;
     }
+
 }

@@ -1,6 +1,6 @@
 package fact.it.roamer.platformertesting;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
